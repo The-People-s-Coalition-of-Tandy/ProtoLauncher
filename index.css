@@ -1,0 +1,92 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+}
+
+html {
+    background-color: antiquewhite;
+    background-image: url(./tandyhourWhite2.jpg);
+    /* -webkit-animation: scrolling-background 7s linear infinite;
+    -moz-animation: scrolling-background 7s linear infinite;
+    -o-animation: scrolling-background 7s linear infinite;
+    animation: scrolling-background 7s linear infinite; */
+}
+
+@keyframes scrolling-background {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: 0 332px;
+    }
+}
+
+img {
+    width: 500px;
+}
+
+h1 {
+    text-align: center;
+    font-family: 'Lobster', cursive;
+    /* background-color: rgb(49, 49, 255); */
+}
+
+main {
+    margin: 0 auto;
+    width: fit-content;
+    background-color: rgba(245, 245, 245, 0.737);
+    padding: 20px
+}
+
+audio {
+    display: none;
+}
+
+form {
+    text-align: center;
+}
+
+.cd-player {
+    position: relative;
+}
+
+#previewImage {
+    position: absolute;
+    width: 262px;
+    top: 30%;
+    left: 16.75%;
+}
+
+#previewImage.playing {
+    animation: spin-cd .01s linear infinite;
+}
+
+#albumCover {
+    position: absolute;
+    width: 500px;
+}
+
+#albumCover.playing {
+    animation: fade 10s linear infinite alternate forwards;
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.95;
+        }
+}
+
+@keyframes spin-cd {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(359deg);
+    }
+}

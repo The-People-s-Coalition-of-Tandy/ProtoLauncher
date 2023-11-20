@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Tandy Launcher</title>
+</head>
+<body>
+    
+    <main>
+        <h1>TandyTunes Music Launcher</h1>
+        <form id="fileForm" enctype="multipart/form-data" onchange="previewImage()">
+            <label for="fileInput">Insert CD Image</label>
+            <input type="file" id="fileInput" accept=".png" required>
+            <br><br>
+            <button type="button" onclick="decodeFile()">Play</button>
+        </form>
+    
+        <figure class="cd-player">
+            <img id="previewImage" alt="CD Image" style="display: none;">
+            <img id="albumCover" alt="Album Cover" style="display: none;">
+            <img id="CD" alt="CD Player" src="CDPlayer.jpg">
+        </figure>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.js"></script>
+    <script src="index.js"></script>
+
+</body>
+
+</html>
