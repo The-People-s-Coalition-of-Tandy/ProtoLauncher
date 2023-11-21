@@ -10,6 +10,7 @@ async function decodeFile() {
     const buffer = await readFile(file);
     checkHeader(buffer);
     await checkChunks(buffer, buffer.length);
+    // previewImage();
 }
 
 async function readFile(file) {
@@ -55,14 +56,14 @@ async function decodeMp3(buffer, len) {
 
     // Create an <audio> element
     const audioElement = document.querySelector("audio");
-
+    
     // Set the audio source to the Object URL
     audioElement.src = objectURL;
-
+    
     // Append the <audio> element to the document
     const mainDiv = document.querySelector("main");
     mainDiv.appendChild(audioElement);
-    audioElement.play();
+    
 
     const previewImage = document.getElementById('previewImage');
     const albumCover = document.querySelector("#albumCover");
@@ -71,8 +72,7 @@ async function decodeMp3(buffer, len) {
         previewImage.classList.remove('playing');
         albumCover.classList.remove('playing');
     }
-    previewImage.classList.add('playing');
-    albumCover.classList.add('playing');
+    
     
     var jsmediatags = window.jsmediatags;
     // console.log(jsmediatags)
@@ -155,4 +155,36 @@ function previewImage() {
 window.onload = function () {
     const fileInput = document.getElementById('fileInput');
     fileInput.files.length !== 0 && previewImage();
+
+    const audioElement = document.querySelector("audio");
+    audioElement.autoplay = true;
+    
+    // onClick of first interaction on page before I need the sounds
+    // (This is a tiny MP3 file that is silent and extremely short - retrieved from https://bigsoundbank.com and then modified)
+    audioElement.src = "data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV";
+    
+}
+
+// playButton.addEventListener('click', function(){
+//     const audioElement = document.querySelector("audio");
+//     audioElement.play(); //every array element is constructed using new Audio("yourlink");
+
+//     window.setTimeout(function(){
+//       audioElement.pause();
+
+//     },1);
+//   })
+
+function playerrr() {
+    const audioElement = document.querySelector("audio");
+    decodeFile();
+    setTimeout(() => {
+        audioElement.play();
+        // previewImage();
+    }, 500);
+    // audioElement.play()
+    const CDImage = document.getElementById('previewImage');
+    const albumCover = document.querySelector("#albumCover");
+    CDImage.classList.add('playing');
+    albumCover.classList.add('playing');
 }
