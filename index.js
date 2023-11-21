@@ -54,8 +54,7 @@ async function decodeMp3(buffer, len) {
     const objectURL = URL.createObjectURL(blob);
 
     // Create an <audio> element
-    const audioElement = document.createElement('audio');
-    audioElement.controls = true;
+    const audioElement = document.querySelector("audio");
 
     // Set the audio source to the Object URL
     audioElement.src = objectURL;
@@ -67,20 +66,20 @@ async function decodeMp3(buffer, len) {
 
     const previewImage = document.getElementById('previewImage');
     const albumCover = document.querySelector("#albumCover");
-
+    
     audioElement.onended = () =>{
         previewImage.classList.remove('playing');
         albumCover.classList.remove('playing');
     }
     previewImage.classList.add('playing');
     albumCover.classList.add('playing');
-
+    
     var jsmediatags = window.jsmediatags;
-    console.log(jsmediatags)
+    // console.log(jsmediatags)
     // From remote host
     jsmediatags.read(blob, {
         onSuccess: function (tag) {
-            console.log(tag);
+            // console.log(tag);
             var picture = tag.tags.picture; // create reference to track art
             var base64String = "";
             for (var i = 0; i < picture.data.length; i++) {
@@ -99,26 +98,26 @@ async function decodeMp3(buffer, len) {
 
 async function checkChunks(buffer, size) {
     let pos = 8;
-
+    
     while (pos < size) {
         const chunkLength = getBigEndian(buffer, pos);
         pos += 4;
         const chunkType = String.fromCharCode.apply(null, buffer.slice(pos, pos + 4));
         pos += 4;
-
+        
         if (chunkType === 'juLi' || chunkType === 'tEXt' || chunkType === 'eXIf') {
             await decodeMp3(buffer.slice(pos, pos + chunkLength), chunkLength);
             break; // If you want to stop processing after decoding 'juLi' chunk
         }
-
+        
         // TODO: Read chunk data
-
+        
         pos += chunkLength;
-
+        
         // TODO: Check CRC
         pos += 4;
-
-        console.log(`chunk: ${chunkType} - len: ${chunkLength} (${size - pos})`);
+        
+        // console.log(`chunk: ${chunkType} - len: ${chunkLength} (${size - pos})`);
     }
 }
 
@@ -133,17 +132,27 @@ function validatePNG(val, msg) {
 function previewImage() {
     const fileInput = document.getElementById('fileInput');
     const previewImage = document.getElementById('previewImage');
-
+    const albumCover = document.querySelector("#albumCover");
+    
     const file = fileInput.files[0];
-
+    
     if (file) {
         const reader = new FileReader();
-
+        
         reader.onload = function (e) {
             previewImage.src = e.target.result;
+            const audioElement = document.querySelector("audio");
+            audioElement.pause();
+            previewImage.classList.remove('playing');
+            albumCover.classList.remove('playing');
             previewImage.style.display = 'block';
         };
-
+        
         reader.readAsDataURL(file);
     }
+}
+
+window.onload = function () {
+    const fileInput = document.getElementById('fileInput');
+    fileInput.files.length !== 0 && previewImage();
 }

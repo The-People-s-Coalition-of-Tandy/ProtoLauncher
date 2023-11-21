@@ -63,13 +63,21 @@ form {
     animation: spin-cd .01s linear infinite;
 }
 
+@media (prefers-reduced-motion) {
+    #previewImage.playing {
+        animation: none;
+    }
+}
+
 #albumCover {
     position: absolute;
     width: 500px;
+    opacity: 0;
 }
 
 #albumCover.playing {
     animation: fade 10s linear infinite alternate forwards;
+    animation-delay: 2s;
 }
 
 @keyframes fade {
