@@ -7,14 +7,17 @@
     <title>Encode DigiCD</title>
 </head>
 <body>
-    
-    <form id="fileForm">
-        <label for="mp3Input">Select MP3 File:</label>
-        <input type="file" id="mp3Input" accept="audio/mpeg">
-        <br>
-    </form>
-    
-    <button type="button" id="submitButton">Encode MP3 in PNG</button>
+    <div class="inputs">
+        <h1>Tandy DigiCD Burner</h1>
+        <form id="fileForm">
+            <label for="mp3Input">Select MP3 File:</label>
+            <input type="file" id="mp3Input" accept="audio/mpeg">
+            <br>
+        </form>
+        
+        <button type="button" id="submitButton">Mint new DigiCD</button>
+    </div>
+        
     <div class="cd-burner" id="cd-burner">
         <div id="cd-cover"></div>
         <!-- <img src="cd-burner.png" alt="CD Burner" id> -->
