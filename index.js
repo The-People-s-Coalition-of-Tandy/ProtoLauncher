@@ -43,7 +43,6 @@ function getBigEndian(buffer, offset) {
 }
 
 async function decodeMp3(buffer, len) {
-    // Your decoding logic here
     // For simplicity, this example alerts the user with a base64 representation of the data
     //   alert(btoa(String.fromCharCode.apply(null, buffer.slice(0, len))));
     // Convert the Uint8Array to a Blob
@@ -105,9 +104,11 @@ async function checkChunks(buffer, size) {
         const chunkType = String.fromCharCode.apply(null, buffer.slice(pos, pos + 4));
         pos += 4;
         
-        if (chunkType === 'juLi' || chunkType === 'tEXt' || chunkType === 'eXIf') {
+        if (chunkType === 'juLi') {
+            console.log(chunkType + ' chunk found in mpenepn')
+            console.log(buffer.slice(pos, pos + chunkLength));
             await decodeMp3(buffer.slice(pos, pos + chunkLength), chunkLength);
-            break; // If you want to stop processing after decoding 'juLi' chunk
+            break;
         }
         
         // TODO: Read chunk data
@@ -117,7 +118,7 @@ async function checkChunks(buffer, size) {
         // TODO: Check CRC
         pos += 4;
         
-        // console.log(`chunk: ${chunkType} - len: ${chunkLength} (${size - pos})`);
+        console.log(`chunk: ${chunkType} - len: ${chunkLength} (${size - pos})`);
     }
 }
 
@@ -179,7 +180,7 @@ function playerrr() {
     const audioElement = document.querySelector("audio");
     decodeFile();
     setTimeout(() => {
-        audioElement.play();
+        // audioElement.play();
         // previewImage();
     }, 500);
     // audioElement.play()

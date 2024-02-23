@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Encode DigiCD</title>
+</head>
+<body>
+    
+    <form id="fileForm">
+        <label for="mp3Input">Select MP3 File:</label>
+        <input type="file" id="mp3Input" accept="audio/mpeg">
+        <br>
+    </form>
+    
+    <button type="button" id="submitButton">Encode MP3 in PNG</button>
+    <div class="cd-burner" id="cd-burner">
+        <div id="cd-cover"></div>
+        <!-- <img src="cd-burner.png" alt="CD Burner" id> -->
+
+    </div>
+    <!-- <button type="button" id="debugButton">Debug PNG</button> -->
+    <script src="encode.js"></script>
+</body>
+</html>
