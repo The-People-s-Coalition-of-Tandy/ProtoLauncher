@@ -106,6 +106,12 @@ async function checkChunks(buffer, size) {
             // console.log(chunkType + ' chunk found in mpenepn')
             // console.log(buffer.slice(pos, pos + chunkLength));
             await decodeMp3(buffer.slice(pos, pos + chunkLength), chunkLength);
+            console.log(`
+            ################################
+            # People's Coalition of Tandy  #
+            #        DigiCD Format         #
+            ################################
+            `);
             break;
         }
         
