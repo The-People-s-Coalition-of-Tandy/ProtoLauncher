@@ -74,8 +74,6 @@ async function decodeMp3(buffer, len) {
     
     
     var jsmediatags = window.jsmediatags;
-    // console.log(jsmediatags)
-    // From remote host
     jsmediatags.read(blob, {
         onSuccess: function (tag) {
             // console.log(tag);
@@ -89,9 +87,9 @@ async function decodeMp3(buffer, len) {
             albumCover.src = imageUri;
             albumCover.style.display = 'block';
         },
-        onError: function (error) {
-            console.log(error);
-        }
+        // onError: function (error) {
+        //     console.log(error);
+        // }
     });
 }
 
@@ -105,8 +103,8 @@ async function checkChunks(buffer, size) {
         pos += 4;
         
         if (chunkType === 'juLi') {
-            console.log(chunkType + ' chunk found in mpenepn')
-            console.log(buffer.slice(pos, pos + chunkLength));
+            // console.log(chunkType + ' chunk found in mpenepn')
+            // console.log(buffer.slice(pos, pos + chunkLength));
             await decodeMp3(buffer.slice(pos, pos + chunkLength), chunkLength);
             break;
         }
