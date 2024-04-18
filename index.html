@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="index.css">
     <title>Tandy Launcher</title>
 </head>
+
 <body>
-    
+
     <main>
         <h1>Tandy DigiCD Launcher</h1>
         <form id="fileForm" enctype="multipart/form-data" onchange="previewImage()">
@@ -20,11 +21,12 @@
             background: green;
             color: white;" onclick="playerrr()">Play</button>
         </form><br>
-<div style="width: 100%; display: flex; justify-content: center;">
+        <div style="width: 100%; display: flex; justify-content: right;">
 
-   <!-- <a href="./library"><button style="border-radius: 0;">Library</button></a>  -->
-</div>
-    
+            <a href="./wheat"><button class="archive" style="border-radius: 0;">Archive</button></a>
+            <a href="./library"><button style="border-radius: 0;">Library</button></a>
+        </div>
+
         <figure class="cd-player">
             <img id="previewImage" alt="CD Image" style="display: none;">
             <img id="albumCover" alt="Album Cover" style="display: none;">

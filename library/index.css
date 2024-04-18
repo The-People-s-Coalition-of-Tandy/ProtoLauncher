@@ -183,10 +183,13 @@ label {
 .cd {
     width: 350px;
     transition: transform .1s ease;
-    padding: 20px;
+    margin: 20px;
+    border-radius: 100%;
+    /* background-color: red; */
 }
 
 .cd:hover {
-    transform: scale(1.2);
+    transform: scale(1.075);
     transition: transform .3s ease;
+    cursor: pointer;
 }

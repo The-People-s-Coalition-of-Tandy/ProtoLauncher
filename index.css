@@ -52,6 +52,15 @@ main {
     padding: 20px
 }
 
+.archive {
+    filter: invert(1);
+}
+
+button {
+    cursor: pointer;
+    margin-right: 10px;
+}
+
 audio {
     display: none;
 }
