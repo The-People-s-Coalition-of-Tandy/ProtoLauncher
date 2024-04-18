@@ -183,7 +183,7 @@ label {
 .cd {
     width: 350px;
     transition: transform .1s ease;
-    margin: 20px;
+    margin: 25px;
     border-radius: 100%;
     /* background-color: red; */
 }
