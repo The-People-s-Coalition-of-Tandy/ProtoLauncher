@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blend CD Cover</title>
+</head>
+<body>
+    <input type="file" id="upload" accept="image/*">
+    <canvas id="canvas1" style="display:none;"></canvas> <!-- For blending -->
+<canvas id="canvas2"></canvas> <!-- For transparency management -->
+
+    <button onclick="downloadImage()">Download CD Cover</button>
+
+    <script src="script.js"></script>
+</body>
+</html>

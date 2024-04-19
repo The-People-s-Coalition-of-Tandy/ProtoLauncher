@@ -2,7 +2,16 @@ async function decodeFile() {
     const mp3Input = document.getElementById('mp3Input');
     const mp3 = mp3Input.files[0];
 
-    const pngBuffer = await fetchAndReadPngAsArrayBuffer('./cd.png');
+    const CDCoverInput = document.getElementById('CDCover');
+    const CDCover = CDCoverInput.files[0];
+    console.log(CDCover);
+    let pngBuffer;
+
+    if (CDCover) {
+        pngBuffer = await processImage(CDCover)
+    } else {
+        pngBuffer = await fetchAndReadPngAsArrayBuffer('./cd.png');
+    }
     const mp3Buffer = await readFile(mp3);
 
     // checkHeader(buffer);
@@ -26,7 +35,7 @@ async function decodeFile() {
         const cdBurnerImg = document.querySelector('.cd-burner img');
         cdBurnerImg.addEventListener('animationend', () => {
             cdBurnerImg.style.transform = 'translateY(50%) rotate(720deg)';
-    
+
             cdBurnerImg.style.animation = 'none';
         });
     });
@@ -37,26 +46,27 @@ async function decodeFile() {
 
 async function fetchAndReadPngAsArrayBuffer(url) {
     try {
-      const response = await fetch(url);
-      const blob = await response.blob();
-      
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          // Convert the blob to a Uint8Array
-          const png = new Uint8Array(e.target.result);
-          resolve(png);
-        };
-        reader.onerror = function(e) {
-          reject(new Error("Failed to read the blob as an ArrayBuffer"));
-        };
-        reader.readAsArrayBuffer(blob);
-      });
+        const response = await fetch(url);
+        console.log(response);
+        const blob = await response.blob();
+        console.log(blob);
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                // Convert the blob to a Uint8Array
+                const png = new Uint8Array(e.target.result);
+                resolve(png);
+            };
+            reader.onerror = function (e) {
+                reject(new Error("Failed to read the blob as an ArrayBuffer"));
+            };
+            reader.readAsArrayBuffer(blob);
+        });
     } catch (error) {
-      console.error("Failed to fetch or read the PNG file:", error);
-      throw error; // Re-throw the error if you want to handle it outside
+        console.error("Failed to fetch or read the PNG file:", error);
+        throw error; // Re-throw the error if you want to handle it outside
     }
-  }
+}
 
 async function readFile(file) {
     return new Promise((resolve, reject) => {
@@ -178,7 +188,7 @@ async function checkChunks(buffer, size, musicBuffer) {
         if (chunkType === 'IEND') {
             let digiCD = write_custom_chunk(buffer, pos - 8, musicBuffer);
 
-            digiCD.set(buffer.slice(pos - 8, pos+4), pos + 4 + musicBuffer.length);
+            digiCD.set(buffer.slice(pos - 8, pos + 4), pos + 4 + musicBuffer.length);
 
             return digiCD;
         }
@@ -216,3 +226,79 @@ submitButton.addEventListener('click', async function () {
 //     const pngBuffer = await readFile(png);
 //     await debugChunks(pngBuffer, pngBuffer.length);
 // });
+
+
+// document.getElementById('upload').addEventListener('change', function(event) {
+//     const file = event.target.files[0];
+//     if (!file.type.startsWith('image/')) {
+//         console.log('Please upload an image file.');
+//         return;
+//     }
+
+//     const reader = new FileReader();
+//     reader.onload = function(e) {
+//         const uploadedImage = new Image();
+//         uploadedImage.onload = function() {
+//             blendImages(uploadedImage);
+//         };
+//         uploadedImage.src = e.target.result;
+//     };
+//     reader.readAsDataURL(file);
+// });
+async function processImage(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const uploadedImage = new Image();
+            uploadedImage.onload = async function () {
+                const canvas = document.getElementById('canvas2');
+                const ctx = canvas.getContext('2d');
+                canvas.width = uploadedImage.width;
+                canvas.height = uploadedImage.height;
+
+                // Blend the images
+                await blendImages(uploadedImage);
+                const image = canvas.toDataURL('image/png');
+                resolve(await fetchAndReadPngAsArrayBuffer(image));
+            };
+            uploadedImage.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
+// Ensure that blendImages correctly handles the blending and waits for all operations to complete
+async function blendImages(uploadedImage) {
+    const canvas1 = document.getElementById('canvas1');
+    const ctx1 = canvas1.getContext('2d');
+    const canvas2 = document.getElementById('canvas2');
+    const ctx2 = canvas2.getContext('2d');
+
+    return new Promise((resolve) => {
+        const cdCoverImage = new Image();
+        cdCoverImage.onload = function () {
+            canvas1.width = canvas2.width = cdCoverImage.width;
+            canvas1.height = canvas2.height = cdCoverImage.height;
+            ctx1.drawImage(uploadedImage, 0, 0, canvas1.width, canvas1.height);
+            ctx1.globalCompositeOperation = 'hard-light';
+            ctx1.drawImage(cdCoverImage, 0, 0);
+            
+            ctx2.drawImage(cdCoverImage, 0, 0);
+            ctx2.globalCompositeOperation = 'source-in';
+            ctx2.drawImage(canvas1, 0, 0);
+            ctx1.globalCompositeOperation = 'source-over';
+            ctx2.globalCompositeOperation = 'source-over';
+            resolve();
+        };
+        cdCoverImage.src = 'cd.png';
+    });
+}
+
+
+function downloadImage() {
+    const canvas = document.getElementById('canvas2');
+    const image = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = 'blended-cd-cover.png';
+    link.href = image;
+    link.click();
+}

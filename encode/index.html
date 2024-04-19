@@ -1,23 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="index.css">
     <title>Tandy DigiCD Burner</title>
 </head>
+
 <body>
     <div class="inputs">
         <h1>Tandy DigiCD Burner</h1>
         <form id="fileForm">
             <label for="mp3Input">Select MP3 File:</label>
-            <input type="file" id="mp3Input" accept="audio/mpeg">
-            <br>
+            <input type="file" id="mp3Input" accept="audio/mpeg"><br></br>
+            <label for="CDCover">(Optional) CD Art:</label>
+            <input type="file" id="CDCover" accept="image/*"> <br>
         </form>
-        
+
+        <canvas id="canvas1" style="display:none;"></canvas> <!-- For blending -->
+        <canvas id="canvas2" style="display: none;"></canvas> <!-- For transparency management -->
+
+
+        <script src="script.js"></script>
+
         <button type="button" id="submitButton">Burn new DigiCD</button>
     </div>
-        
+
     <div class="cd-burner" id="cd-burner">
         <div id="cd-cover"></div>
         <!-- <img src="cd-burner.png" alt="CD Burner" id> -->
@@ -26,4 +35,5 @@
     <!-- <button type="button" id="debugButton">Debug PNG</button> -->
     <script src="encode.js"></script>
 </body>
+
 </html>
