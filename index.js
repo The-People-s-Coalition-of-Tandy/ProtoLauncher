@@ -78,14 +78,18 @@ async function decodeMp3(buffer, len) {
         onSuccess: function (tag) {
             // console.log(tag);
             var picture = tag.tags.picture; // create reference to track art
-            var base64String = "";
-            for (var i = 0; i < picture.data.length; i++) {
-                base64String += String.fromCharCode(picture.data[i]);
+            if (picture) {
+                var base64String = "";
+                for (var i = 0; i < picture.data.length; i++) {
+                    base64String += String.fromCharCode(picture.data[i]);
+                }
+                var imageUri = "data:" + picture.format + ";base64," + window.btoa(base64String);
+                const albumCover = document.querySelector("#albumCover");
+                albumCover.src = imageUri;
+                albumCover.style.display = 'block';
+            } else {
+                albumCover.style.display = 'none';
             }
-            var imageUri = "data:" + picture.format + ";base64," + window.btoa(base64String);
-            const albumCover = document.querySelector("#albumCover");
-            albumCover.src = imageUri;
-            albumCover.style.display = 'block';
         },
         // onError: function (error) {
         //     console.log(error);
