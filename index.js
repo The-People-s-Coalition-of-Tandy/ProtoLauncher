@@ -173,7 +173,24 @@ window.onload = function () {
     audioElement.src = "data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV";
     
 }
-
+window.onload = function () {
+    const playButton = document.getElementById('playButton');
+    playButton.addEventListener('click', function() {
+        const audioElement = document.querySelector("audio");
+        // Update visuals
+        const CDImage = document.getElementById('previewImage');
+        const albumCover = document.querySelector("#albumCover");
+        CDImage.classList.add('playing');
+        albumCover.classList.add('playing');
+        // Use the silent audio trick here
+        audioElement.src = "data:audio/mpeg;base64,SUQzBAAAAAABEVRY...";
+        audioElement.play().then(() => {
+            console.log('Playback started successfully');
+        }).catch(error => {
+            console.error('Playback failed:', error);
+        });
+    });
+};
 // playButton.addEventListener('click', function(){
 //     const audioElement = document.querySelector("audio");
 //     audioElement.play(); //every array element is constructed using new Audio("yourlink");
@@ -184,16 +201,39 @@ window.onload = function () {
 //     },1);
 //   })
 
+// function playerrr() {
+//     const audioElement = document.querySelector("audio");
+//     decodeFile();
+//     setTimeout(() => {
+//         // audioElement.play();
+//         // previewImage();
+//     }, 500);
+//     // audioElement.play()
+//     const CDImage = document.getElementById('previewImage');
+//     const albumCover = document.querySelector("#albumCover");
+//     CDImage.classList.add('playing');
+//     albumCover.classList.add('playing');
+// }
+
 function playerrr() {
     const audioElement = document.querySelector("audio");
-    decodeFile();
-    setTimeout(() => {
-        // audioElement.play();
-        // previewImage();
-    }, 500);
-    // audioElement.play()
-    const CDImage = document.getElementById('previewImage');
-    const albumCover = document.querySelector("#albumCover");
-    CDImage.classList.add('playing');
-    albumCover.classList.add('playing');
+    decodeFile().then(() => {
+        setTimeout(() => {
+            audioElement.play().catch(error => {
+                console.log('Error playing the audio:', error);
+            });
+        }, 500);
+    });
+}
+
+async function decodeFile() {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+    if (!file) {
+        alert('Please choose a PNG file.');
+        return;
+    }
+    const buffer = await readFile(file);
+    checkHeader(buffer);
+    await checkChunks(buffer, buffer.length);
 }
