@@ -5,28 +5,133 @@
 class GradientAnimator {
     // Color pairs for gradient transitions
     static COLORS = [
-        ['#6d00d4', 'rgba(182, 155, 228, 0.65)'],
-        ['#0078d4', 'rgba(155, 196, 228, 0.65)'],
-        ['#d46d00', 'rgba(228, 182, 155, 0.65)'],
-        ['#ff31dd', 'rgba(247, 185, 231, 0.65)'],
-        ['#00d4a5', 'rgba(155, 228, 207, 0.65)']
+        ['#6d00d4', 'rgba(182, 155, 228, .65)'],
+        ['#0078d4', 'rgba(155, 196, 228, .65)'],
+        ['#d46d00', 'rgba(228, 182, 155, .65)'],
+        ['#ff31dd', 'rgba(247, 185, 231, .65)'],
+        ['#00d4a5', 'rgba(155, 228, 207, .65)']
     ];
 
     constructor() {
+        // Ensure COLORS is initialized before proceeding
+        if (!GradientAnimator.COLORS || !GradientAnimator.COLORS.length) {
+            throw new Error('Colors not initialized');
+        }
+
         this.canvas = document.getElementById('gradientCanvas');
+        if (!this.canvas) {
+            throw new Error('Canvas element not found');
+        }
+
         this.ctx = this.canvas.getContext('2d');
         this.angle = 135;
         this.duration = 2000;
         this.transitionDuration = 600;
         this.startTime = performance.now();
 
+        // Logo pattern properties
+        this.logoImage = new Image();
+        this.logoImage.src = '/assets/images/ui/tandyWhite.png';
+        this.logoWidth = 72;
+        this.logoHeight = 82;
+        this.spacing = 0;
+        this.rows = [];
+        this.speed = 0.5;
+
         this.setupCanvas();
         this.bindEvents();
-        this.animate();
+        
+        // Start animation on next frame to ensure everything is ready
+        requestAnimationFrame(() => this.animate());
+
+        // Add animation state
+        this.isAnimating = false;
+        this.animationStartTime = 0;
+        this.animationDuration = 3400;
+        
+        // Add gradient animation state
+        this.gradientAnimating = false;
+        
+        // Bind to file input
+        const fileInput = document.getElementById('fileButton');
+        const playButton = document.getElementById('playButton');
+        if (fileInput) {
+            fileInput.addEventListener('mouseenter', () => {
+                this.toggleAnimation();
+            });
+        }
+        if (playButton) {
+            playButton.addEventListener('click', () => {
+                this.gradientAnimating = !this.gradientAnimating;
+            });
+        }
     }
 
     setupCanvas() {
         this.resizeCanvas();
+        this.initRows();
+    }
+
+initRows() {
+    const totalRows = Math.ceil(this.canvas.height / (this.logoWidth + this.spacing));
+    this.rows = [];
+    
+    for (let i = 0; i < totalRows; i++) {
+        this.rows.push({
+            offset: 0,
+                direction: i % 2 === 0 ? 1 : -1
+            });
+        }
+    }
+
+    drawLogos() {
+        const totalWidth = this.canvas.width + this.logoWidth + this.spacing;
+        
+        this.ctx.fillStyle = 'transparent';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    
+        this.rows.forEach((row, index) => {
+            const y = index * this.logoHeight;
+            // Add staggered offset for even rows to create checkered pattern
+            const staggeredOffset = index % 2 === 0 ? 0 : this.logoWidth / 2;
+
+            if (this.isAnimating) {
+                const elapsed = performance.now() - this.animationStartTime;
+                const progress = Math.min(elapsed / this.animationDuration, 1);
+                const eased = this.easeOutExpo(progress);
+                
+                // Calculate speed based on easing
+                const currentSpeed = this.speed * (1 - eased) * 10;
+                row.offset += currentSpeed * row.direction;
+                
+                // Stop animation when duration is reached
+                if (progress === 1) {
+                    this.isAnimating = false;
+                }
+            }
+            
+            // Adjust wrapping logic
+            if (row.direction > 0 && row.offset > this.logoWidth) {
+                row.offset = -totalWidth;
+            } else if (row.direction < 0 && row.offset < -totalWidth) {
+                row.offset = this.logoWidth + 10;
+            }
+            
+            // Draw logos with staggered offset
+            for (let x = -totalWidth; x < totalWidth * 2; x += this.logoWidth + 3) {
+                // draw the logo with 50% opacity
+                // this.ctx.globalAlpha = 0.85;
+                this.ctx.drawImage(
+                    this.logoImage,
+                    x + row.offset + staggeredOffset,
+                    y,
+                    this.logoWidth,
+                    this.logoHeight
+                );
+                // reset opacity
+                this.ctx.globalAlpha = 1;
+            }
+        });
     }
 
     bindEvents() {
@@ -83,6 +188,25 @@ class GradientAnimator {
     }
 
     renderGradient(currentIndex, nextIndex, progress) {
+        // If not animating, use static angled white gradient
+        if (!this.gradientAnimating) {
+            const gradient = this.ctx.createLinearGradient(
+                0, 0,  // Start from top-left corner
+                this.canvas.width, this.canvas.height  // End at bottom-right corner
+            );
+            // gradient.addColorStop(0, 'rgba(0, 0, 0, 0.95)');
+            // gradient.addColorStop(1, 'rgba(0, 0, 0, 0.45)');
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+            gradient.addColorStop(1, 'rgba(255, 255, 255, 0.45)');
+
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.drawLogos();
+            this.ctx.fillStyle = gradient;
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            return;
+        }
+
+        // Original animated gradient code
         const color1 = this.interpolateColor(
             GradientAnimator.COLORS[currentIndex][0],
             GradientAnimator.COLORS[nextIndex][0],
@@ -107,16 +231,32 @@ class GradientAnimator {
         gradient.addColorStop(1, color2);
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.drawLogos();
         this.ctx.fillStyle = gradient;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    animate(timestamp) {
+    animate() {
+        if (!this.ctx || !this.canvas) return;
+        
         const frame = (timestamp) => {
+            if (!GradientAnimator.COLORS || !GradientAnimator.COLORS.length) return;
             this.render(timestamp);
             requestAnimationFrame(frame);
         };
         requestAnimationFrame(frame);
+    }
+
+    // Add bezier easing function
+    easeOutExpo(x) {
+        return x === 1 ? 1 : 1 - Math.pow(2, -8 * x);
+    }
+
+    toggleAnimation() {
+        this.isAnimating = !this.isAnimating;
+        if (this.isAnimating) {
+            this.animationStartTime = performance.now();
+        }
     }
 }
 
