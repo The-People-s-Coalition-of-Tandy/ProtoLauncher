@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Tandy Launcher</title>
+</head>
+
+<body>
+
+    <main>
+        <h1>Tandy DigiCD Launcher</h1>
+        <form id="fileForm" enctype="multipart/form-data" onchange="previewImage()">
+            <label for="fileInput" style="font-size: large;
+            font-weight: bold;">Insert CD Image</label>
+            <input type="file" id="fileInput" accept=".png" required>
+            <br><br>
+            <button type="button" style="padding: 10px 20px;
+            background: green;
+            color: white; letter-spacing: 2px;" onclick="playerrr()" id="playButton">Play</button>
+        </form><br>
+        <div style="width: 100%; display: flex; justify-content: right;">
+
+            <!-- <a href="./wheat"><button class="archive" style="border-radius: 0;">Archive</button></a> -->
+            <a href="./library" style="text-decoration: none;"><button style="border-radius: 0; padding: 5px; font-weight: bold; border-color: rgb(209, 255, 240); display: flex; align-items: center; gap: 3px"><img src="./PCoTandyLogo.ico" width="20px">Library</button></a>
+                <a href="./encode" style="text-decoration: none; font-size: 10px;"><button style="border-radius: 0; padding: 5px; font-weight: bold; border-color: rgb(252, 209, 255); display: flex; align-items: center; gap: 3px; font-size: 11px;"><img src="./PCoTandyLogo3.ico" width="20px">Burn DigiCD</button></a>
+        </div>
+
+        <figure class="cd-player">
+            <img id="previewImage" alt="CD Image" style="display: none;">
+            <img id="albumCover" alt="Album Cover" style="display: none;">
+            <img id="CD" alt="CD Player" src="./assets/images/ui/hand.png">
+            <audio></audio>
+        </figure>
+    </main>
+    <br>
+
+    <center><a href="https://pcotandy.org"><img src="./tandyButton.png"></a></center>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.js"></script>
+    <script src="index.js"></script>
+
+</body>
+
+</html>

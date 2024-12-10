@@ -1,0 +1,267 @@
+/* Base */
+body {
+    margin: 0;
+    min-height: 100vh;
+    background-image: url(/assets/images/ui/tandyhourWhite.jpg);
+    overflow-x: hidden;
+}
+
+/* Splash Screen */
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeSplash 2s ease-in-out forwards;
+}
+
+.splash-logo {
+    width: 300px;
+    opacity: 0;
+    animation: fadeInLogo 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeSplash {
+    0% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes fadeInLogo {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Gradient Background */
+#gradientCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Main Content */
+.main-content {
+    max-width: 600px;
+    width: 90%;
+    margin: 2rem auto;
+    background: rgba(255, 255, 255, 0.072);
+    padding: 2rem;
+    box-shadow: 0 0 0 1px rgba(142, 142, 142, 0.046),
+                0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(3px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Header */
+.main-header {
+    position: relative;
+    padding-top: 40px;
+    margin-top: 50px;
+}
+
+.header-logo {
+    width: 200px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: -1;
+    top: -120px;
+}
+
+.main-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 300;
+    font-size: 2.5em;
+    color: #010d17;
+    text-shadow: 0 2px 3px rgba(8, 41, 67, 0.5);
+}
+
+.trademark {
+    font-size: 0.45em;
+}
+
+/* Upload Form */
+.upload-form {
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.file-input-wrapper {
+    margin-bottom: 1rem;
+}
+
+.file-input {
+    display: none;
+}
+
+.upload-label {
+    border: 1px solid #ccc;
+    background-color: #005a9e;
+    background-image: linear-gradient(to bottom, #f7f7f7, #adadad);
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: large;
+    font-weight: bold;
+}
+
+.upload-label:hover {
+    background-image: linear-gradient(to bottom, #f7f7f7, #adadad);
+}
+
+/* Player Controls */
+.player-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.play-button {
+    width: 50px;
+    cursor: pointer;
+}
+
+/* Navigation */
+.nav-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin: 1rem 0;
+    gap: 1rem;
+}
+
+.nav-link {
+    text-decoration: none;
+}
+
+.nav-button {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 5px;
+    font-weight: bold;
+    border-radius: 0;
+    cursor: pointer;
+    background: white;
+    border: 2px outset;
+}
+
+.library-button {
+    border-color: rgb(209, 255, 240);
+}
+
+.encode-button {
+    border-color: rgb(252, 209, 255);
+    font-size: 11px;
+}
+
+.nav-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* CD Player */
+.cd-player {
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 500px;
+    transition: transform 0.3s ease;
+}
+
+.player-base {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.cd-preview {
+    position: absolute;
+    width: 52%;
+    top: 30%;
+    left: 16.75%;
+    display: none;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+}
+
+.cd-preview.playing {
+    display: block;
+    animation: spin 0.01s linear infinite;
+}
+
+.album-art {
+    position: absolute;
+    opacity: 0;
+    display: none;
+}
+
+.album-art.playing {
+    display: block;
+    animation: fade 10s linear infinite alternate forwards;
+    animation-delay: 2s;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.footer-logo {
+    max-width: 200px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Animations */
+@keyframes spin {
+    to { transform: rotate(359deg); }
+}
+
+@keyframes fade {
+    to { opacity: 0.95; }
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+    .main-content {
+        width: 95%;
+        margin: 0.5rem auto;
+        padding: 1rem;
+        background-color: rgba(255, 255, 255, 0);
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(6.5px);
+    }
+
+    .main-title {
+        font-size: 1.5em;
+    }
+
+    .nav-buttons {
+        flex-wrap: wrap;
+    }
+
+    .nav-button {
+        padding: 6px 12px;
+        font-size: 0.8em;
+    }
+}
+
+@media (prefers-reduced-motion) {
+    .cd-preview.playing {
+        animation: none;
+    }
+}

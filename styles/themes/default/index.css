@@ -1,0 +1,209 @@
+/* Base styles */
+:root {
+    --primary-color: rgb(49, 49, 255);
+    --background-color: antiquewhite;
+    --container-bg: rgba(245, 245, 245, 0.737);
+    --button-border-library: rgb(209, 255, 240);
+    --button-border-encode: rgb(252, 209, 255);
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    background-color: var(--background-color);
+    background-image: url(/assets/images/ui/tandyhourWhite2.jpg);
+}
+
+/* Typography */
+@font-face {
+    font-family: 'para';
+    src: url(/assets/fonts/paraaminobenzoic.otf);
+}
+
+@font-face {
+    font-family: 'crystal';
+    src: url(/assets/fonts/crystal\ radio\ kit.otf);
+}
+
+/* Layout */
+.container {
+    margin: 0 auto;
+    width: fit-content;
+    background-color: var(--container-bg);
+    padding: 20px;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Upload Form */
+.upload-form {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.file-input-wrapper {
+    margin-bottom: 1rem;
+}
+
+.file-input {
+    display: none;
+}
+
+.upload-label {
+    display: inline-block;
+    font-size: large;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 0;
+    border: 2px outset #e9e9ed;
+    background: #e9e9ed;
+    cursor: pointer;
+}
+
+.upload-label:hover {
+    border: 2px inset #e9e9ed;
+    background: #e9e9ed;
+}
+
+/* Player Controls */
+.player-controls {
+    margin-top: 1rem;
+}
+
+.play-button {
+    padding: 10px 20px;
+    background: #e9e9ed;
+    border: 2px outset #e9e9ed;
+    color: green;
+    letter-spacing: 2px;
+    font-size: 1.2em;
+    font-family: 'para';
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.play-button:hover:not(:disabled) {
+    background: darkgreen;
+}
+
+.play-button:disabled {
+    background: #666;
+    cursor: not-allowed;
+}
+
+/* Navigation */
+.navigation {
+    display: flex;
+    justify-content: flex-end;
+    margin: 1rem 0;
+}
+
+.nav-link {
+    text-decoration: none;
+}
+
+.nav-button {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 5px;
+    font-weight: bold;
+    border-radius: 0;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.library-button {
+    border-color: var(--button-border-library);
+}
+
+.encode-button {
+    border-color: var(--button-border-encode);
+    font-size: 11px;
+}
+
+.nav-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* CD Player */
+.cd-player {
+    position: relative;
+    margin: 2rem;
+}
+
+.player-base {
+    max-width: 500px;
+    width: 100%;
+}
+
+.cd-preview {
+    position: absolute;
+    width: 52%;
+    top: 30%;
+    left: 16.75%;
+    display: none;
+}
+
+.cd-preview.playing {
+    display: block;
+    animation: spin-cd 0.01s linear infinite;
+}
+
+.album-art {
+    position: absolute;
+    opacity: 0;
+    display: none;
+}
+
+.album-art.playing {
+    display: block;
+    animation: fade 10s linear infinite alternate forwards;
+    animation-delay: 2s;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.footer-link {
+    display: inline-block;
+}
+
+.footer-logo {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Animations */
+@keyframes fade {
+    from { opacity: 0; }
+    to { opacity: 0.95; }
+}
+
+@keyframes spin-cd {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(359deg); }
+}
+
+/* Media Queries */
+@media screen and (max-width: 500px) {
+    .container {
+        padding: 20px 0;
+    }
+}
+
+@media (prefers-reduced-motion) {
+    .cd-preview.playing {
+        animation: none;
+    }
+}

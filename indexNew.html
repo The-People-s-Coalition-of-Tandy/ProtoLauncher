@@ -4,39 +4,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles/themes/default/index.css">
+    <link rel="stylesheet" href="/styles/themes/pop/index.css">
     <title>DigiCD Player</title>
 </head>
 
 <body>
-    <main class="container">
-        <h1 class="title">DigiCD Player</h1>
-        
-        <form id="fileForm" class="upload-form" enctype="multipart/form-data">
+    <!-- Splash Screen -->
+    <div class="splash-screen">
+        <img src="/assets/images/aeroExperiments/xeroz2.png" class="splash-logo" alt="Xeroz Logo">
+    </div>
+    
+    <!-- Animated Background -->
+    <canvas id="gradientCanvas"></canvas>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="main-header">
+            <img src="/assets/images/aeroExperiments/xeroz2.png" class="header-logo" alt="Xeroz Logo">
+            <h1 class="main-title">
+                DigiCD<sup class="trademark">™</sup> Launcher
+            </h1>
+        </header>
+
+        <!-- Upload Form -->
+        <form id="uploadForm" class="upload-form" enctype="multipart/form-data">
             <div class="file-input-wrapper">
                 <label for="fileInput" class="upload-label">Insert DigiCD</label>
                 <input type="file" id="fileInput" class="file-input" accept=".png" required>
             </div>
             <div class="player-controls">
-                <button type="button" id="playButton" class="play-button" onclick="playerrr()">Play</button>
+                <img src="/assets/images/aeroExperiments/orbPlay3.png" id="playButton" class="play-button" alt="Play">
             </div>
         </form>
 
-        <nav class="navigation">
-            <a href="./pages/library" class="nav-link">
+        <!-- Navigation -->
+        <nav class="nav-buttons">
+            <a href="/pages/library" class="nav-link">
                 <button class="nav-button library-button">
                     <img src="/assets/images/icons/PCoTandyLogo.ico" class="nav-icon" alt="Library">
                     Library
                 </button>
             </a>
-            <a href="./pages/encode" class="nav-link">
+            <a href="/pages/encode/" class="nav-link">
                 <button class="nav-button encode-button">
-                    <img src="/assets/images/icons/PCoTandyLogo.ico" class="nav-icon" alt="Encode">
+                    <img src="/assets/images/icons/PCoTandyLogo3.ico" class="nav-icon" alt="Encode">
                     Burn DigiCD
                 </button>
             </a>
         </nav>
 
+        <!-- CD Player -->
         <figure class="cd-player">
             <img id="previewImage" class="cd-preview" alt="CD Preview">
             <img id="albumCover" class="album-art" alt="Album Art">
@@ -45,14 +62,17 @@
         </figure>
     </main>
 
+    <!-- Footer -->
     <footer class="footer">
         <a href="https://pcotandy.org" class="footer-link">
             <img src="/assets/images/ui/tandyButton.png" class="footer-logo" alt="PCo Tandy">
         </a>
     </footer>
 
+    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.js"></script>
     <script src="/js/core/player.js"></script>
+    <script src="/js/utils/gradient.js"></script>
 </body>
 
 </html>

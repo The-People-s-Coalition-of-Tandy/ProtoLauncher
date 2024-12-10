@@ -1,0 +1,153 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0078d4, #005a9e);
+    overflow-x: hidden;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: 
+        linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    padding: 2rem 1rem;
+}
+
+main {
+    max-width: 600px;
+    width: 90%;
+    margin: 1rem auto;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 
+        0 0 0 1px rgba(255, 255, 255, 0.3),
+        0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.cd-player {
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 500px;
+    transition: transform 0.3s ease;
+}
+
+.cd-player img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+#previewImage {
+    position: absolute;
+    width: 52%;
+    top: 30%;
+    left: 16.75%;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+}
+
+h1 {
+    text-align: center;
+    margin: 0 0 1.5rem 0;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 300;
+    font-size: 2em;
+    color: #005a9e;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+form {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+}
+
+/* Navigation buttons styling */
+.nav-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+}
+
+button {
+    background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 8px 16px;
+    color: #005a9e;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.9em;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 
+        0 1px 3px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+button:hover {
+    background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+    transform: translateY(-1px);
+    box-shadow: 
+        0 2px 5px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+button img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Bottom logo styling */
+center {
+    margin-top: auto;
+    padding: 1rem;
+}
+
+center img {
+    max-width: 200px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+@media screen and (max-width: 500px) {
+    body {
+        padding: 1rem 0.5rem;
+    }
+    
+    main {
+        padding: 1rem;
+        width: 95%;
+        margin: 0.5rem auto;
+    }
+    
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    .nav-buttons {
+        flex-wrap: wrap;
+    }
+    
+    button {
+        padding: 6px 12px;
+        font-size: 0.8em;
+    }
+}

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Sequence Decoder</title>
+    <style>
+        .color-input {
+            margin: 10px;
+        }
+        select {
+            padding: 5px;
+        }
+        #imageCanvas {
+            display: block !important;
+            margin: 20px 0;
+            border: 1px solid #ccc;
+        }
+        .debug-info {
+            margin: 10px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Color Sequence Decoder</h1>
+    
+    <div class="input-methods">
+        <h2>Manual Input</h2>
+        <div id="inputs">
+            <div class="color-input">
+                <select id="color1">
+                    <option value="red">Red</option>
+                    <option value="green">Green</option>
+                    <option value="blue">Blue</option>
+                    <option value="black">Black</option>
+                </select>
+            </div>
+            <!-- Repeat for all 5 positions -->
+            <div class="color-input">
+                <select id="color2">
+                    <option value="red">Red</option>
+                    <option value="green">Green</option>
+                    <option value="blue">Blue</option>
+                    <option value="black">Black</option>
+                </select>
+            </div>
+            <div class="color-input">
+                <select id="color3">
+                    <option value="red">Red</option>
+                    <option value="green">Green</option>
+                    <option value="blue">Blue</option>
+                    <option value="black">Black</option>
+                </select>
+            </div>
+            <div class="color-input">
+                <select id="color4">
+                    <option value="red">Red</option>
+                    <option value="green">Green</option>
+                    <option value="blue">Blue</option>
+                    <option value="black">Black</option>
+                </select>
+            </div>
+            <div class="color-input">
+                <select id="color5">
+                    <option value="red">Red</option>
+                    <option value="green">Green</option>
+                    <option value="blue">Blue</option>
+                    <option value="black">Black</option>
+                </select>
+            </div>
+        </div>
+        <button onclick="decode()">Decode Manual Input</button>
+
+        <h2>Image Input</h2>
+        <input type="file" id="imageInput" accept="image/*">
+        <canvas id="imageCanvas" style="display: none;"></canvas>
+        <p>Click 5 points in order from left to right where the colored text appears</p>
+        <button onclick="resetPoints()">Reset Points</button>
+        <button onclick="decodeImage()">Decode Image</button>
+        <button onclick="showCoordinates()">Show Coordinates</button>
+    </div>
+
+    <div id="result"></div>
+    <div class="debug-info" id="debugInfo"></div>
+
+    <script>
+        function decode() {
+            const colors = ['red', 'green', 'blue', 'black'];
+            let base4 = '';
+            
+            // Get values from all 5 selects
+            for (let i = 1; i <= 5; i++) {
+                const colorValue = document.getElementById(`color${i}`).value;
+                const digit = colors.indexOf(colorValue);
+                base4 += digit;
+            }
+            
+            // Convert from base 4 to decimal
+            const number = parseInt(base4, 4);
+            
+            document.getElementById('result').textContent = `Decoded number: ${number}`;
+        }
+
+        let clickedPoints = [];
+
+        function resetPoints() {
+            clickedPoints = [];
+            const canvas = document.getElementById('imageCanvas');
+            const ctx = canvas.getContext('2d');
+            // Redraw the original image
+            const img = new Image();
+            img.src = canvas.toDataURL();
+            img.onload = () => ctx.drawImage(img, 0, 0);
+        }
+
+        function showCoordinates() {
+            if (clickedPoints.length === 5) {
+                const canvas = document.getElementById('imageCanvas');
+                const coordinates = clickedPoints.map(point => ({
+                    x: point.x / canvas.width,
+                    y: point.y / canvas.height
+                }));
+                
+                console.log('Copy these coordinates into your colorPositions array:');
+                console.log(coordinates.map((coord, i) => 
+                    `{x: img.width * ${coord.x.toFixed(3)}, y: img.height * ${coord.y.toFixed(3)}},`
+                ).join('\n'));
+            } else {
+                alert('Please click all 5 points first');
+            }
+        }
+
+        async function decodeImage() {
+            const imageInput = document.getElementById('imageInput');
+            const canvas = document.getElementById('imageCanvas');
+            const ctx = canvas.getContext('2d');
+            const debugInfo = document.getElementById('debugInfo');
+            
+            if (!imageInput.files || !imageInput.files[0]) {
+                alert('Please select an image first');
+                return;
+            }
+
+            const img = new Image();
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+
+                // Define the original image dimensions these coordinates were taken from
+                const originalWidth = 1419;
+                const originalHeight = 1412;
+
+                // Use clicked points if available, otherwise scale the exact coordinates
+                const colorPositions = clickedPoints.length === 5 ? clickedPoints : [
+                    {x: img.width * (624/originalWidth), y: img.height * (848/originalHeight)},
+                    {x: img.width * (669/originalWidth), y: img.height * (876/originalHeight)},
+                    {x: img.width * (719/originalWidth), y: img.height * (877/originalHeight)},
+                    {x: img.width * (767/originalWidth), y: img.height * (867/originalHeight)},
+                    {x: img.width * (813/originalWidth), y: img.height * (855/originalHeight)}
+                ];
+
+                let base4 = '';
+                const colors = ['red', 'green', 'blue', 'black'];
+                let debugText = '';
+
+                colorPositions.forEach((pos, index) => {
+                    ctx.beginPath();
+                    ctx.arc(pos.x, pos.y, 10, 0, 2 * Math.PI);
+                    ctx.strokeStyle = 'red';
+                    ctx.stroke();
+                    
+                    // Sample just the single pixel
+                    const pixel = ctx.getImageData(
+                        Math.round(pos.x), 
+                        Math.round(pos.y), 
+                        1, 1
+                    ).data;
+                    
+                    const r = pixel[0];
+                    const g = pixel[1];
+                    const b = pixel[2];
+                    
+                    const color = getClosestColor(r, g, b);
+                    base4 += colors.indexOf(color);
+                    
+                    debugText += `Position ${index + 1}: (${Math.round(pos.x)}, ${Math.round(pos.y)}) ` +
+                                `RGB(${r}, ${g}, ${b}) → ${color}\n`;
+
+                                // color the pixel read white
+                                ctx.fillStyle = 'white';
+                                ctx.fillRect(pos.x, pos.y, 1, 1);
+                });
+
+                const number = parseInt(base4, 4);
+                document.getElementById('result').textContent = `Decoded number from image: ${number}`;
+                debugInfo.innerHTML = `<pre>${debugText}</pre>`;
+            };
+
+            img.src = URL.createObjectURL(imageInput.files[0]);
+        }
+
+        // Add click handler to canvas
+        document.getElementById('imageCanvas').addEventListener('click', function(event) {
+            if (clickedPoints.length >= 5) return;
+
+            const rect = this.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            // Draw point
+            const ctx = this.getContext('2d');
+            ctx.beginPath();
+            ctx.arc(x, y, 3, 0, 2 * Math.PI);
+            ctx.strokeStyle = 'red';
+            ctx.stroke();
+            
+            // Store point
+            clickedPoints.push({x, y});
+            
+            // If we have all points, decode automatically
+            if (clickedPoints.length === 5) {
+                decodeImage();
+            }
+        });
+
+        function getClosestColor(r, g, b) {
+            // Adjust thresholds for compressed images
+            const threshold = 80;  // Lowered from 100
+            const difference = 20; // Minimum difference between channels to be considered dominant
+            
+            // Calculate differences between channels
+            const redGreenDiff = Math.abs(r - g);
+            const redBlueDiff = Math.abs(r - b);
+            const greenBlueDiff = Math.abs(g - b);
+            
+            // Check which channel is dominant with the new rules
+            const isRed = r > threshold && redGreenDiff > difference && redBlueDiff > difference;
+            const isGreen = g > threshold && redGreenDiff > difference && greenBlueDiff > difference;
+            const isBlue = b > threshold && redBlueDiff > difference && greenBlueDiff > difference;
+            
+            // If the color is very close to white or gray, it's probably black text
+            const isGrayish = Math.abs(r - g) < 30 && Math.abs(g - b) < 30 && Math.abs(r - b) < 30;
+            if (isGrayish) {
+                return 'black';
+            }
+            
+            if (isRed) return 'red';
+            if (isGreen) return 'green';
+            if (isBlue) return 'blue';
+            
+            // If no clear dominant color, use the highest channel
+            const max = Math.max(r, g, b);
+            if (max === r) return 'red';
+            if (max === g) return 'green';
+            if (max === b) return 'blue';
+            
+            return 'black';  // fallback
+        }
+    </script>
+</body>
+</html>
