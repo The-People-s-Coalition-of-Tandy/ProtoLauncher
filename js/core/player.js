@@ -9,7 +9,8 @@ const elements = {
     previewImage: document.getElementById('previewImage'),
     albumCover: document.getElementById('albumCover'),
     audioPlayer: document.getElementById('audioPlayer'),
-    playButton: document.getElementById('playButton')
+    playButton: document.getElementById('playButton'),
+    uploadLabel: document.getElementById('uploadLabel')
 };
 
 // File Reading Utilities
@@ -85,25 +86,64 @@ async function extractAlbumArt(audioBlob) {
 function updateUIForPlayback(isPlaying) {
     elements.previewImage.classList.toggle('playing', isPlaying);
     elements.albumCover.classList.toggle('playing', isPlaying);
-    elements.playButton.disabled = !elements.fileInput.files.length;
 }
 
-function handleFilePreview() {
+async function handleFilePreview() {
     const file = elements.fileInput.files[0];
     if (!file) {
-        elements.playButton.disabled = true;
+        elements.playButton.classList.remove('visible');
         return;
     }
 
-    elements.playButton.disabled = false;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        elements.previewImage.src = e.target.result;
-        elements.previewImage.style.display = 'block';
-        elements.audioPlayer.pause();
-        updateUIForPlayback(false);
-    };
-    reader.readAsDataURL(file);
+    try {
+        // First show the CD preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            elements.previewImage.src = e.target.result;
+            elements.previewImage.style.display = 'block';
+            elements.audioPlayer.pause();
+            updateUIForPlayback(false);
+        };
+        reader.readAsDataURL(file);
+
+        // Then validate if it's a DigiCD
+        const buffer = await readFileAsBuffer(file);
+        if (validatePNGHeader(buffer)) {
+            // Check for DigiCD chunk
+            let position = 8; // Skip PNG header
+            let isValidDigiCD = false;
+
+            while (position < buffer.length) {
+                const chunkLength = getBigEndian(buffer, position);
+                position += 4;
+                const chunkType = String.fromCharCode(...buffer.slice(position, position + 4));
+                
+                if (chunkType === DIGCD_CHUNK_TYPE) {
+                    isValidDigiCD = true;
+                    break;
+                }
+                
+                position += 4 + chunkLength + 4; // Skip chunk type, data, and CRC
+            }
+
+            if (isValidDigiCD) {
+                // Show play button with animation
+                elements.uploadLabel.classList.remove('visible');
+                elements.playButton.classList.add('visible');
+
+            } else {
+                elements.playButton.classList.remove('visible');
+                alert('This PNG file is not a valid DigiCD');
+            }
+        } else {
+            elements.playButton.classList.remove('visible');
+            alert('Please insert a valid PNG file');
+        }
+    } catch (error) {
+        console.error('Error previewing file:', error);
+        elements.playButton.classList.remove('visible');
+        alert('Error reading file');
+    }
 }
 
 // Main Player Functions
@@ -125,6 +165,9 @@ async function playDigiCD() {
         
         updateUIForPlayback(true);
         await elements.audioPlayer.play();
+
+        elements.playButton.classList.remove('visible');
+        elements.uploadLabel.classList.add('visible');
         
         console.log(`
         ################################

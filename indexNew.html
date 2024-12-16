@@ -11,7 +11,7 @@
 <body>
     <!-- Splash Screen -->
     <div class="splash-screen">
-        <img src="/assets/images/aeroExperiments/xeroz2.png" class="splash-logo" alt="Xeroz Logo">
+        <img src="/assets/images/aeroExperiments/tandybubble.png" class="splash-logo" alt="Xeroz Logo">
     </div>
     
     <!-- Animated Background -->
@@ -20,7 +20,7 @@
     <!-- Main Content -->
     <main class="main-content">
         <header class="main-header">
-            <img src="/assets/images/aeroExperiments/xeroz2.png" class="header-logo" alt="Xeroz Logo">
+            <img src="/assets/images/aeroExperiments/tandybubble.png" class="header-logo" alt="Xeroz Logo">
             <h1 class="main-title">
                 DigiCD<sup class="trademark">™</sup> Launcher
             </h1>
@@ -29,29 +29,14 @@
         <!-- Upload Form -->
         <form id="uploadForm" class="upload-form" enctype="multipart/form-data">
             <div class="file-input-wrapper" id="fileButton">
-                <label for="fileInput" class="upload-label">Insert DigiCD</label>
+                <label for="fileInput" class="upload-label visible" id="uploadLabel">Insert DigiCD</label>
                 <input type="file" id="fileInput" class="file-input" accept=".png" required>
             </div>
             <div class="player-controls">
+                
                 <img src="/assets/images/aeroExperiments/orbPlay3.png" id="playButton" class="play-button" alt="Play">
             </div>
         </form>
-
-        <!-- Navigation -->
-        <nav class="nav-buttons">
-            <a href="/pages/library" class="nav-link">
-                <button class="nav-button library-button">
-                    <img src="/assets/images/icons/PCoTandyLogo.ico" class="nav-icon" alt="Library">
-                    Library
-                </button>
-            </a>
-            <a href="/pages/encode/" class="nav-link">
-                <button class="nav-button encode-button">
-                    <img src="/assets/images/icons/PCoTandyLogo3.ico" class="nav-icon" alt="Encode">
-                    Burn DigiCD
-                </button>
-            </a>
-        </nav>
 
         <!-- CD Player -->
         <figure class="cd-player">
@@ -60,6 +45,22 @@
             <img id="CD" class="player-base" alt="CD Player" src="/assets/images/ui/hand.png">
             <audio id="audioPlayer"></audio>
         </figure>
+
+                <!-- Navigation -->
+                <nav class="nav-buttons">
+                    <a href="/pages/library" class="nav-link">
+                        <button class="nav-button library-button">
+                            <img src="/assets/images/icons/PCoTandyLogo.ico" class="nav-icon" alt="Library">
+                            Library
+                        </button>
+                    </a>
+                    <a href="/pages/encode/" class="nav-link">
+                        <button class="nav-button encode-button">
+                            <img src="/assets/images/icons/PCoTandyLogo3.ico" class="nav-icon" alt="Encode">
+                            Burn DigiCD
+                </button>
+            </a>
+        </nav>
     </main>
 
     <!-- Footer -->
