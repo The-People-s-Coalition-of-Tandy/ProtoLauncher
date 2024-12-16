@@ -1,4 +1,4 @@
-# Tandy DigiCD Launcher 🎵
+# Tandy DigiCD Launcher
 
 A digital music format that embeds MP3 audio data within PNG images, creating virtual "CDs" that can be played in a web browser. Built with vanilla JavaScript and styled with CSS.
 
