@@ -1,9 +1,10 @@
 # Tandy DigiCD Launcher
 
-A digital music format that embeds MP3 audio data inside of PNG files
-<p align="center"><img src="https://launcher.pcotandy.org/assets/images/ui/hand.png"></p>
+<p align="center">A digital music format that embeds MP3 audio data inside of PNG files.</p>
+<p align="center">Download the DigiCD below and play <a href="https://launcher.pcotandy.org">here</a></p> 
+<p align="center"><img width="400" height="400" src="https://launcher.pcotandy.org/pages/library/CDs/Sparkle.png"></p>
 
-<a href="https://launcher.pcotandy.org">Try the DigiCD Player</a>
+
 
 
 ### The DigiCD Format
