@@ -7,11 +7,7 @@ A digital music format that embeds MP3 audio data inside of PNG files
 
 
 ### The DigiCD Format
-DigiCDs are PNG images that contain hidden MP3 data, allowing music to be stored and shared as images while maintaining full audio quality. When a DigiCD is loaded into the player, it:
-
-1. Validates the PNG header
-2. Extracts the embedded MP3 data
-3. Creates an audio blob for playback
+DigiCDs are PNG images that contain hidden MP3 data, allowing music to be stored and shared as images.
 
 #### Encoding Process
 **Image Preparation**
