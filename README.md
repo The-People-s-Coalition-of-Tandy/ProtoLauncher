@@ -1,6 +1,6 @@
 # Tandy DigiCD Launcher
 
-A digital music format that embeds MP3 audio data within PNG images, creating virtual "CDs" that can be played in a web browser. Built with vanilla JavaScript and styled with CSS.
+A digital music format that embeds MP3 audio data inside of PNG files
 <p align="center"><img src="https://launcher.pcotandy.org/assets/images/ui/hand.png"></p>
 
 <a href="https://launcher.pcotandy.org">Try the DigiCD Player</a>
@@ -14,23 +14,23 @@ DigiCDs are PNG images that contain hidden MP3 data, allowing music to be stored
 3. Creates an audio blob for playback
 
 #### Encoding Process
-1. **Image Preparation**
+**Image Preparation**
    - Takes source PNG image and MP3 file
    - Extracts raw image data into a buffer
 
-2. **Data Embedding**
+**Data Embedding**
    - Converts MP3 file to binary data
    - Injects MP3 data into a custom chunk
    - Performs CRC32 checksum on the data
    - Writes the data to a new PNG file
 
 #### Decoding Process
-1. **Validation**
+**Validation**
    - Checks PNG signature (‰PNG\r\n\x1A\n)
    - Verifies presence of DigiCD custom chunk
    - Validates CRC32 checksum
 
-2. **Data Extraction**
+**Data Extraction**
    - Locates embedded MP3 data using custom chunk identifier
    - Creates Blob URL for audio playback
 
